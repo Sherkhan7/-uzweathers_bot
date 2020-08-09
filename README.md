@@ -1,1 +1,1 @@
-# @uzweathers_bot
+# @sherzods_bot
