@@ -1,0 +1,10 @@
+{
+    "chat_id": 197256155,
+    "message_id": 856,
+    "is_bot": false,
+    "first_name": "Sherzodbek",
+    "last_name": "\ud83e\udd82",
+    "username": "esanov98",
+    "text": null,
+    "date": "2020-06-22 18:44:59"
+}
