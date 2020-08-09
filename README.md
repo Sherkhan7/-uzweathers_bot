@@ -1,1 +1,1 @@
-# @sherzods_bot
+# @sherzods_bot(SputnikNews)
