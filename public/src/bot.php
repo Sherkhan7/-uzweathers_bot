@@ -1,18 +1,17 @@
 <?php
-
 require "menu/menu.php";
-require "config.php";
+
+//require "config.php";
 
 use Telegram\Bot\Api;
 
-$telegram = new Api('1038081989:AAHfMUWCUQnqXZX5e-JCztdHM-F0tprPYhA');
+$telegram = new Api('1038081989:AAHfMUWCUQnqXZX5e-JCztdHM-F0tprPYhA', true);
 //$conn_array = ['localhost', 'u83155_botdb', 'u83155_root', 'hpnotebook'];
-
-$conn = connect('localhost', 'u83155_botdb', 'u83155_root', 'hpnotebook');
-file_put_contents(__DIR__ . '/connection.txt' , json_encode($conn, JSON_PRETTY_PRINT));
+//$conn = connect('localhost', 'u83155_botdb', 'u83155_root', 'hpnotebook');
+//file_put_contents(__DIR__ . '/connection.txt' , json_encode($conn, JSON_PRETTY_PRINT));
 
 $update = $telegram->getWebhookUpdates();
-file_put_contents(__DIR__ . '/update.txt' , json_encode($update, JSON_PRETTY_PRINT));
+file_put_contents(__DIR__ . '/update.json', json_encode($update, JSON_PRETTY_PRINT));
 
 $chat_id = $update->getMessage()->getChat()->getId();
 $message_id = $update->getMessage()->getMessageId();
@@ -35,20 +34,20 @@ $vars_arr = [
 ];
 
 $vars = compact($vars_arr);
-file_put_contents(__DIR__ . '/vars.txt', json_encode($vars, JSON_PRETTY_PRINT));
+file_put_contents(__DIR__ . '/vars.json', json_encode($vars, JSON_PRETTY_PRINT));
 
-$user = get_user($conn, $chat_id);
+//$user = get_user($conn, $chat_id);
 
-if (!empty($user)) {
-    file_put_contents(__DIR__ . '/userfromdb.txt',json_encode($user, JSON_PRETTY_PRINT));
+//if (!empty($user)) {
+//file_put_contents(__DIR__ . '/userfromdb.txt', json_encode($user, JSON_PRETTY_PRINT));
 
-    $user_text_result = add_user_textlog($conn, ['chat_id' => $chat_id, 'text' => $text]);
+//    $user_text_result = add_user_textlog($conn, ['chat_id' => $chat_id, 'text' => $text]);
 
 //    $telegram->sendMessage([
 //        'chat_id' => $chat_id,
 //        'text' => $user_text_result,
 //    ]);
-}
+//}
 // else {
 //
 //    $user_info = ['chat_id', 'is_bot', 'first_name', 'last_name', 'username'];
@@ -84,7 +83,7 @@ if ($text == "Siyosat" || $text == "Dunyoda" || $text == "Iqtisod" || $text == "
 //    file_put_contents(__DIR__ . '/news.json', json_encode($xml_channel, JSON_PRETTY_PRINT));
     $items = [];
 
-    foreach ($xml_channel->item as $item){
+    foreach ($xml_channel->item as $item) {
         array_push($items, $item);
     }
 
@@ -95,22 +94,23 @@ if ($text == "Siyosat" || $text == "Dunyoda" || $text == "Iqtisod" || $text == "
     $iqtisod = [];
 
     foreach ($items as $item) {
-        if ($item->category == 'Dunyoda'){
+        if ($item->category == 'Dunyoda') {
             array_push($dunyoda, $item);
         }
-        if ($item->category == 'Siyosat'){
+        if ($item->category == 'Siyosat') {
             array_push($siyosat, $item);
         }
-        if ($item->category == 'Sport'){
+        if ($item->category == 'Sport') {
             array_push($sport, $item);
         }
-        if ($item->category == 'Iqtisod'){
+        if ($item->category == 'Iqtisod') {
             array_push($iqtisod, $item);
         }
     }
 
-    function call_news($text) {
-        global  $siyosat, $dunyoda, $sport, $iqtisod, $telegram, $chat_id;
+    function call_news($text)
+    {
+        global $siyosat, $dunyoda, $sport, $iqtisod, $telegram, $chat_id;
 
         if ($text == "Dunyoda") $news_arr = $dunyoda;
         if ($text == "Siyosat") $news_arr = $siyosat;
@@ -129,6 +129,7 @@ if ($text == "Siyosat" || $text == "Dunyoda" || $text == "Iqtisod" || $text == "
         file_put_contents(__DIR__ . "/$text.json", json_encode($news_arr, JSON_PRETTY_PRINT));
 
     }
+
     call_news($text);
 
 }
